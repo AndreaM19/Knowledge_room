@@ -1,0 +1,36 @@
+@CHARSET "ISO-8859-1";
+/* This is the general custom css file */
+
+html,
+body {
+	overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+body {
+	padding-bottom: 20px;
+	padding-top:20px;
+}
+
+.navbar {
+	margin-bottom: 20px;
+}
+
+footer {
+	
+}
+
+.topBanner{
+	background-color:#FFF;
+}
+
+.topSlogan{
+	padding-top:10px;
+	padding-bottom:20px;
+}
+
+.contentDisplayer{
+	border-top: solid 4px #FF6600;
+}
+
+.footerContainer{
+	border-top: solid 1px #FF6600;
+}
