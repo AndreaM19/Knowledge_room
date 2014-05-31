@@ -1,3 +1,4 @@
+
 <?php
 @ require 'include/DB/dbUtility.php';
 @ require 'include/DB/dbData.php';
@@ -112,48 +113,52 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 
 			<!-- Right side menu -->
 			<div class="col-md-4 topSlogan text-center">
-				<h1>Welcome to the knowledge room</h1>
-				<h5>Your personal knowledge base</h5>
-				<a class="btn btn-warning" href="#">INCREASES!!</a>
+				<br>
+				<h5>You are in:</h5>
+				<h1><?php echo"" . $_GET ['cat'] . "";?></h1>
+				<h4>Subsection: <?php echo"" . $_GET ['subCat'] . "";?></h4>
 			</div>
 		</div>
 
 		<div class="col-md-12 contentDisplayer">
-			<br>
-			<h4 class="text-center" style="color: #F60;">Click on one of the
-				category below to know more about something...or add a new item!!</h4>
-			<hr>
-			
+			<br><br>
+
 			<!-- Breadcrumbs Navigation -->
-			<!--<ol class="breadcrumb">
-				<li><a href="#">Home</a></li>
-				<li><a href="#">Library</a></li>
-				<li class="active">Data</li>
-			</ol>-->
-			
+			<ol class="breadcrumb">
+				<li><a href="index.php">Home</a></li>
+				<li><a href="<?php echo"subcategories.php?cat=" . $_GET ['cat'] . "";?>"><?php echo"" . $_GET ['cat'] . "";?></a></li>
+				<li class="active"><?php echo"" . $_GET ['subCat'] . "";?></li>
+			</ol>
+
 			<div class="row">
 				<!--/span-->
 				<?php
-				$queryText = "SELECT * FROM topCategory";
+				$queryText = "SELECT * FROM resource INNER JOIN link ON title=resource INNER JOIN linkType ON linkType=type WHERE subCategory='" . $_GET ['subCat'] . "'";
 				$query = dbUtility::queryToDB ( $dbConn, $queryText );
+				$count = 0;
 				while ( $row = mysqli_fetch_array ( $query ) ) :
 					?>
-					<div class="col-6 col-sm-6 col-lg-4">
+					<div class="col-md-1">
+					<br>
+					<a href=#><div class="fa fa-star" style="margin-right: 10px; margin-left:20px;"></div></a>
+					<a href=#><div class="fa fa-eye"></div></a>
+					</div>
+					<div class="col-md-8">
 					<?php
-					echo "<h2>" . $row ['categoryName'] . "</h2>";
-					echo "<p>" . $row ['categoryDescription'] . "</p>";
+					echo "<h3>" . $row ['title'] . " - " . $row ['annotationDate'] . "</h3>";
+					echo "<p class='text-justify'>" . $row ['description'] . "</p>";
+					echo "<h5><div class='fa ".$row ['linkIconName']."'></div> &nbsp;link: <a href='".$row ['linkPath']."' target='_blank' rel='nofollow'>".$row ['linkPath']."</a></h5>";
 					?>
-					<p>
-						<a class="btn btn-default"
-							href="<?php echo"subcategories.php?cat=" . $row ['categoryName'] . "";?>"
-							role="button">View more... &raquo;</a>
-					</p>
+					<hr>
 					<br>
 				</div>
 				<?php
+					$count ++;
 				endwhile
 				;
 				dbUtility::freeMemoryAfterQuery ( $query );
+				if ($count == 0)
+					echo "<h3 class='text-center'>Sorry no item in this sub set!!</h3><br><br>";
 				?>
 				
 			</div>
@@ -162,7 +167,10 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 
 		<footer>
 			<div class="col-md-12 footerContainer text-left">
-				<h6>&copy; Knowledge room: your personal web knowledge base - Design by <a href="">Andrea Marchetti</a></h6>
+				<h6>
+					&copy; Knowledge room: your personal web knowledge base - Design by
+					<a href="">Andrea Marchetti</a>
+				</h6>
 			</div>
 		</footer>
 

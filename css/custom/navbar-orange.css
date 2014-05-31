@@ -14,6 +14,30 @@
 	color: #222222;
 }
 
+.navbar-orange .navbar-toggle {
+  border-color: #FF6600;
+}
+
+.navbar-orange .navbar-toggle:hover,
+.navbar-orange .navbar-toggle:focus {
+  background-color: #FFEECC;
+}
+
+.navbar-orange .navbar-toggle .icon-bar {
+  background-color: #FF6600;
+}
+
+@media (max-width: 767px) {
+  .navbar-orange .navbar-nav .open .dropdown-menu > li > a {
+    color: #222222;
+  }
+}
+
+.navbar-orange .navbar-collapse,
+.navbar-orange .navbar-form {
+  border-color: #FF6600;
+}
+
 .navbar-orange .navbar-brand:hover,
 .navbar-orange .navbar-brand:focus {
   color: #222222;

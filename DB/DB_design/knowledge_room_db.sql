@@ -9,128 +9,101 @@ USE `knowledge_room` ;
 -- -----------------------------------------------------
 -- Table `knowledge_room`.`topCategory`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `knowledge_room`.`topCategory` ;
+
 CREATE TABLE IF NOT EXISTS `knowledge_room`.`topCategory` (
   `categoryId` INT NOT NULL AUTO_INCREMENT,
-  `categoryName` VARCHAR(45) NOT NULL,
+  `categoryName` VARCHAR(100) NOT NULL,
   `categoryDescription` TEXT NULL,
+  `categoryImg` VARCHAR(150) NULL,
   PRIMARY KEY (`categoryId`),
-  UNIQUE INDEX `categoryName_UNIQUE` (`categoryName` ASC))
+  UNIQUE INDEX `categoryName_UNIQUE` (`categoryName` ASC),
+  UNIQUE INDEX `categoryImg_UNIQUE` (`categoryImg` ASC))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `knowledge_room`.`subCategory`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `knowledge_room`.`subCategory` ;
+
 CREATE TABLE IF NOT EXISTS `knowledge_room`.`subCategory` (
   `subCategoryId` INT NOT NULL AUTO_INCREMENT,
+  `subCategoryName` VARCHAR(100) NOT NULL,
   `subCategoryDescription` TEXT NULL,
-  `topCategory` INT NOT NULL,
+  `topCategory` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`subCategoryId`),
-  INDEX `fk_subCategory_category1_idx` (`topCategory` ASC),
+  INDEX `fk_subCategory_category_idx` (`topCategory` ASC),
+  UNIQUE INDEX `subCategoryName_UNIQUE` (`subCategoryName` ASC),
   CONSTRAINT `fk_subCategory_category`
     FOREIGN KEY (`topCategory`)
-    REFERENCES `knowledge_room`.`topCategory` (`categoryId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `knowledge_room`.`resource`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `knowledge_room`.`resource` (
-  `resourceId` INT NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(45) NOT NULL,
-  `annotationDate` DATE NOT NULL,
-  `description` TEXT NULL,
-  `subCategory` INT NOT NULL,
-  PRIMARY KEY (`resourceId`),
-  INDEX `fk_resource_subCategory1_idx` (`subCategory` ASC),
-  UNIQUE INDEX `title_UNIQUE` (`title` ASC),
-  CONSTRAINT `fk_resource_subCategory`
-    FOREIGN KEY (`subCategory`)
-    REFERENCES `knowledge_room`.`subCategory` (`subCategoryId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `knowledge_room`.`linkType`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `knowledge_room`.`linkType` (
-  `linkTypeId` INT NOT NULL AUTO_INCREMENT,
-  `type` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`linkTypeId`, `type`),
-  UNIQUE INDEX `type_UNIQUE` (`type` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `knowledge_room`.`link`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `knowledge_room`.`link` (
-  `linkId` INT NOT NULL AUTO_INCREMENT,
-  `linkPath` VARCHAR(200) NOT NULL,
-  `linkType` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`linkId`),
-  INDEX `fk_link_linkType_idx` (`linkType` ASC),
-  CONSTRAINT `fk_link_linkType`
-    FOREIGN KEY (`linkType`)
-    REFERENCES `knowledge_room`.`linkType` (`type`)
+    REFERENCES `knowledge_room`.`topCategory` (`categoryName`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `knowledge_room`.`linkConnection`
+-- Table `knowledge_room`.`resource`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `knowledge_room`.`linkConnection` (
-  `resourceId` INT NOT NULL,
-  `linkId` INT NOT NULL,
-  PRIMARY KEY (`resourceId`, `linkId`),
-  INDEX `fk_resource_has_link_link1_idx` (`linkId` ASC),
-  INDEX `fk_resource_has_link_resource1_idx` (`resourceId` ASC),
-  CONSTRAINT `fk_resource_has_link_resource`
-    FOREIGN KEY (`resourceId`)
-    REFERENCES `knowledge_room`.`resource` (`resourceId`)
+DROP TABLE IF EXISTS `knowledge_room`.`resource` ;
+
+CREATE TABLE IF NOT EXISTS `knowledge_room`.`resource` (
+  `resourceId` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(200) NOT NULL,
+  `annotationDate` DATE NOT NULL,
+  `description` TEXT NULL,
+  `subCategory` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`resourceId`),
+  UNIQUE INDEX `title_UNIQUE` (`title` ASC),
+  INDEX `fk_resource_subCategory_idx` (`subCategory` ASC),
+  CONSTRAINT `fk_resource_subCategory`
+    FOREIGN KEY (`subCategory`)
+    REFERENCES `knowledge_room`.`subCategory` (`subCategoryName`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_resource_has_link_link`
-    FOREIGN KEY (`linkId`)
-    REFERENCES `knowledge_room`.`link` (`linkId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Data for table `knowledge_room`.`topCategory`
+-- Table `knowledge_room`.`linkType`
 -- -----------------------------------------------------
-START TRANSACTION;
-USE `knowledge_room`;
-INSERT INTO `knowledge_room`.`topCategory` (`categoryId`, `categoryName`, `categoryDescription`) VALUES (1, 'Informatics', 'This section contains knowledge about: programming, coding, networks, systems ecc');
-INSERT INTO `knowledge_room`.`topCategory` (`categoryId`, `categoryName`, `categoryDescription`) VALUES (2, 'Elctronics', 'This section contains knowledge about: electronics');
-INSERT INTO `knowledge_room`.`topCategory` (`categoryId`, `categoryName`, `categoryDescription`) VALUES (3, 'Music', 'This section contains something about music world, songs, artists ecc');
-INSERT INTO `knowledge_room`.`topCategory` (`categoryId`, `categoryName`, `categoryDescription`) VALUES (4, 'Audio Technology', 'This section contains knowledge about audio technologies, music equipment, intresting audio stuff, ecc');
+DROP TABLE IF EXISTS `knowledge_room`.`linkType` ;
 
-COMMIT;
+CREATE TABLE IF NOT EXISTS `knowledge_room`.`linkType` (
+  `linkTypeId` INT NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(45) NOT NULL,
+  `linkIconName` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`linkTypeId`, `type`),
+  UNIQUE INDEX `type_UNIQUE` (`type` ASC),
+  UNIQUE INDEX `linkIconName_UNIQUE` (`linkIconName` ASC))
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Data for table `knowledge_room`.`linkType`
+-- Table `knowledge_room`.`link`
 -- -----------------------------------------------------
-START TRANSACTION;
-USE `knowledge_room`;
-INSERT INTO `knowledge_room`.`linkType` (`linkTypeId`, `type`) VALUES (5, 'Microsoft Excel');
-INSERT INTO `knowledge_room`.`linkType` (`linkTypeId`, `type`) VALUES (4, 'Microsoft PowerPoint ');
-INSERT INTO `knowledge_room`.`linkType` (`linkTypeId`, `type`) VALUES (3, 'Microsoft Word');
-INSERT INTO `knowledge_room`.`linkType` (`linkTypeId`, `type`) VALUES (6, 'Other');
-INSERT INTO `knowledge_room`.`linkType` (`linkTypeId`, `type`) VALUES (2, 'PDF document');
-INSERT INTO `knowledge_room`.`linkType` (`linkTypeId`, `type`) VALUES (1, 'WEB Page');
+DROP TABLE IF EXISTS `knowledge_room`.`link` ;
 
-COMMIT;
+CREATE TABLE IF NOT EXISTS `knowledge_room`.`link` (
+  `linkId` INT NOT NULL AUTO_INCREMENT,
+  `linkPath` TEXT NOT NULL,
+  `linkType` VARCHAR(45) NOT NULL,
+  `resource` VARCHAR(200) NOT NULL,
+  PRIMARY KEY (`linkId`),
+  INDEX `fk_link_linkType_idx` (`linkType` ASC),
+  UNIQUE INDEX `resource_resourceId_UNIQUE` (`resource` ASC),
+  CONSTRAINT `fk_link_linkType`
+    FOREIGN KEY (`linkType`)
+    REFERENCES `knowledge_room`.`linkType` (`type`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_link_resource`
+    FOREIGN KEY (`resource`)
+    REFERENCES `knowledge_room`.`resource` (`title`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
