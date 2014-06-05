@@ -35,6 +35,10 @@ footer {
 	padding-bottom:20px;
 }
 
+.catBox{
+	height:220px;
+}
+
 .contentDisplayer{
 	border-top: solid 4px #FF6600;
 }
@@ -59,4 +63,32 @@ footer {
 
 .breadcrumb > .active {
 	color: #999;
+}
+
+.form-box{
+	margin-top:20px;
+	margin-bottom:20px;
+	background-color:#EEE;
+	border:solid 4px #FFF;
+	border-radius:20px;
+}
+
+.form-addItem{
+}
+
+.form-addItem input[type='text']{
+	padding:6px;
+	color:#555;
+}
+
+.form-addItem select{
+	padding:6px;
+	margin-left:10px;
+	font-size:14px;
+	width:300px;
+}
+
+.form-addItem select option{
+	color:#555;
+	font-size:14px;
 }

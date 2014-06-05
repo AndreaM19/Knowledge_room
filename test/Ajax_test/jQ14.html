@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <title>Esempio AJAX</title>
+        <script type="text/javascript" src="src/jquery.js">
+        </script>
+        <script language="JavaScript" type="text/javascript">
+            $(function(){
+                $('#topCat').change(function(event){
+                    $.ajax({
+                        type: 'GET',
+                        url: 'query.php',
+                        data: "reg=" + $('#topCat').val(),
+                        dataType: 'json',
+                        success: setSubCat
+                    });
+                });
+            });
+            
+            function setSubCat(data){
+            	selectActivator();
+                $('#subCat').find('option').remove();
+                $('#subCat').append('<option selected> -- Select one subcategory -- </option>');
+                $.each(data, function(key, val){
+                    $('#subCat').append('<option>' + val + '</option>');
+                });
+            }
+            
+            function selectActivator(){
+            	selectValue=$('select#topCat').val();//get select value
+            	if(selectValue!='-'){
+            		$('select#subCat').removeAttr('disabled');
+            	}
+            	else {
+            		$('select#subCat').attr('disabled','disabled');
+            	}
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Ajax test with Select</h1>
+        <form name="miaform">
+            <table>
+                <tr>
+                    <td>
+                        topCat
+                    </td>
+                    <td>
+                        <select id="topCat" size="1">
+                            <option selected value='-'> --Select one category-- </option>
+                            <option>Informatics</option>
+                            <option>Computer music</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        subCat
+                    </td>
+                    <td>
+                        <select id="subCat" size="1" disabled>
+                        <option selected value='-'> -- </option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

@@ -58,7 +58,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
 						<li><a href="index.php"><div class="fa fa-home"></div> Home</a></li>
-						<li><a href="#"><div class="fa fa-pencil"></div> New item</a></li>
+						<li><a href="newitem.php"><div class="fa fa-pencil"></div> New item</a></li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">Favourite <b class="caret"></b></a>
 							<ul class="dropdown-menu">
@@ -96,7 +96,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 							</ul></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">Sign in</a></li>
+						<li><a href="signin.php">Sign in</a></li>
 					</ul>
 				</div>
 				<!--/.nav-collapse -->
@@ -135,7 +135,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 				$count = 0;
 				while ( $row = mysqli_fetch_array ( $query ) ) :
 					?>
-					<div class="col-6 col-sm-6 col-lg-4">
+					<div class="col-md-4">
 					<?php
 					echo "<h2>" . $row ['subCategoryName'] . "</h2>";
 					echo "<p>" . $row ['subCategoryDescription'] . "</p>";
@@ -153,7 +153,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 				;
 				dbUtility::freeMemoryAfterQuery ( $query );
 				if ($count == 0)
-					echo "<h3 class='text-center'>Sorry this is an empty set!!</h3><br><br>";
+					echo "<div class='text-center'><h3>Sorry this is an empty set!!</h3><h2>:-(</h2><br><br></div>";
 				?>
 				
 			</div>

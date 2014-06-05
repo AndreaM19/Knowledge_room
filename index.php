@@ -58,7 +58,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 					<ul class="nav navbar-nav">
 						<li><a href="index.php"><div class="fa fa-home"></div>
 								Home</a></li>
-						<li><a href="#"><div class="fa fa-pencil"></div> New item</a></li>
+						<li><a href="newitem.php"><div class="fa fa-pencil"></div> New item</a></li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">Favourite <b class="caret"></b></a>
 							<ul class="dropdown-menu">
@@ -96,7 +96,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 							</ul></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">Sign in</a></li>
+						<li><a href="signin.php">Sign in</a></li>
 					</ul>
 				</div>
 				<!--/.nav-collapse -->
@@ -114,7 +114,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 			<div class="col-md-4 topSlogan text-center">
 				<h1>Welcome to the knowledge room</h1>
 				<h5>Your personal knowledge base</h5>
-				<a class="btn btn-warning" href="#">INCREASES!!</a>
+				<a class="btn btn-warning" href="newitem.php">INCREASES!!</a>
 			</div>
 		</div>
 
@@ -134,11 +134,11 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 			<div class="row">
 				<!--/span-->
 				<?php
-				$queryText = "SELECT * FROM topCategory";
+				$queryText = "SELECT * FROM topCategory ORDER BY categoryName ASC";
 				$query = dbUtility::queryToDB ( $dbConn, $queryText );
 				while ( $row = mysqli_fetch_array ( $query ) ) :
 					?>
-					<div class="col-6 col-sm-6 col-lg-4">
+					<div class="col-md-4 catBox">
 					<?php
 					echo "<h2>" . $row ['categoryName'] . "</h2>";
 					echo "<p>" . $row ['categoryDescription'] . "</p>";
@@ -148,7 +148,6 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 							href="<?php echo"subcategories.php?cat=" . $row ['categoryName'] . "";?>"
 							role="button">View more... &raquo;</a>
 					</p>
-					<br>
 				</div>
 				<?php
 				endwhile
@@ -158,6 +157,8 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 				
 			</div>
 			<!--/row-->
+            
+            <br><br>
 		</div>
 
 		<footer>
