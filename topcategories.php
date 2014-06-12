@@ -9,7 +9,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 ?>
 
 <?php
-LoginSessions::startSession ();
+LoginSessions::startSession();
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +47,7 @@ LoginSessions::startSession ();
 	<!-- Container -->
 	<div class="container">
 		<!-- Static navbar -->
-		<div class="navbar navbar-default navbar-orange" level="navigation">
+		<div class="navbar navbar-default navbar-orange" role="navigation">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -60,7 +60,7 @@ LoginSessions::startSession ();
 				</div>
 				<div class="navbar-collapse collapse">
 					<?php
-					include ("include/Navbar/navbar.php");
+					include("include/Navbar/navbar.php");
 					?>
 				</div>
 				<!--/.nav-collapse -->
@@ -87,14 +87,14 @@ LoginSessions::startSession ();
 			<h4 class="text-center" style="color: #F60;">Click on one of the
 				category below to know more about something...or add a new item!!</h4>
 			<hr>
-
+			
 			<!-- Breadcrumbs Navigation -->
 			<!--<ol class="breadcrumb">
 				<li><a href="#">Home</a></li>
 				<li><a href="#">Library</a></li>
 				<li class="active">Data</li>
 			</ol>-->
-
+			
 			<div class="row">
 				<!--/span-->
 				<?php
@@ -110,7 +110,7 @@ LoginSessions::startSession ();
 					<p>
 						<a class="btn btn-default"
 							href="<?php echo"subcategories.php?cat=" . $row ['categoryName'] . "";?>"
-							level="button">View more... &raquo;</a>
+							role="button">View more... &raquo;</a>
 					</p>
 				</div>
 				<?php
@@ -121,17 +121,13 @@ LoginSessions::startSession ();
 				
 			</div>
 			<!--/row-->
-
-			<br>
-			<br>
+            
+            <br><br>
 		</div>
 
 		<footer>
 			<div class="col-md-12 footerContainer text-left">
-				<h6>
-					&copy; Knowledge room: your personal web knowledge base - Design by
-					<a href="">Andrea Marchetti</a>
-				</h6>
+				<h6>&copy; Knowledge room: your personal web knowledge base - Design by <a href="">Andrea Marchetti</a></h6>
 			</div>
 		</footer>
 

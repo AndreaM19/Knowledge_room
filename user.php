@@ -83,47 +83,45 @@ LoginSessions::startSession ();
 		</div>
 
 		<div class="col-md-12 contentDisplayer">
+	        <h2>User profile details</h2>
 			<br>
-			<h4 class="text-center" style="color: #F60;">Click on one of the
-				category below to know more about something...or add a new item!!</h4>
-			<hr>
-
-			<!-- Breadcrumbs Navigation -->
-			<!--<ol class="breadcrumb">
-				<li><a href="#">Home</a></li>
-				<li><a href="#">Library</a></li>
-				<li class="active">Data</li>
-			</ol>-->
-
-			<div class="row">
-				<!--/span-->
-				<?php
-				$queryText = "SELECT * FROM topCategory ORDER BY categoryName ASC";
-				$query = dbUtility::queryToDB ( $dbConn, $queryText );
-				while ( $row = mysqli_fetch_array ( $query ) ) :
-					?>
-					<div class="col-md-4 catBox">
-					<?php
-					echo "<h2>" . $row ['categoryName'] . "</h2>";
-					echo "<p>" . $row ['categoryDescription'] . "</p>";
-					?>
-					<p>
-						<a class="btn btn-default"
-							href="<?php echo"subcategories.php?cat=" . $row ['categoryName'] . "";?>"
-							level="button">View more... &raquo;</a>
-					</p>
-				</div>
-				<?php
-				endwhile
-				;
-				dbUtility::freeMemoryAfterQuery ( $query );
-				?>
-				
-			</div>
-			<!--/row-->
-
-			<br>
-			<br>
+            <div class="col-md-3">
+            <?php
+			$queryText="SELECT email, password, name, surname, role FROM user WHERE email='".$_SESSION ['userMail']."'";
+			$query=dbUtility::queryToDB($dbConn, $queryText);
+			while ( $row = mysqli_fetch_array ( $query ) ){
+				$name=$row['name'];
+				$surname=$row['surname'];
+				$email=$row['email'];
+				$role=$row['role'];
+			}
+			dbUtility::freeMemoryAfterQuery($query);
+			
+            echo"<img src='" . $_SESSION ['userImg'] . "' class='img-circle img-responsive' style='width:180px;' alt'".$name." ".$surname."' title'".$name." ".$surname."'>";
+			?>
+            <br><br>
+            </div>
+            
+            <div class="col-md-6">
+			<?php			
+			echo"<h3>Name: ".$name."</h3>";
+			echo"<h3>Surname: ".$surname."</h3>";
+			echo"<br>";
+			echo"<h4>Registered mail: ".$email."</h4>";
+			echo"<br>";
+			echo"<h4>Description:</h4>";
+			echo"<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
+			echo"<br><br>";
+			?>
+            </div>
+            
+            <div class="col-md-3">
+            <?php
+            echo"<img src='img/icon/role/".$role.".png' style='width:50px;' alt'".$role."'>";
+            echo"<h4>Role: ".$role."</h4>";
+            ?>
+            
+            </div>
 		</div>
 
 		<footer>

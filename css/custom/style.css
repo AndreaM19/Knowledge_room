@@ -92,3 +92,12 @@ footer {
 	color:#555;
 	font-size:14px;
 }
+
+.favourite a{
+	margin-left:15px;
+}
+
+.avatar{
+	width:20px; 
+	margin-right:5px;
+}

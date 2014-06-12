@@ -2,10 +2,19 @@
 @ require 'include/DB/dbUtility.php';
 @ require 'include/DB/dbData.php';
 require_once 'include/Auth/LoginSessions.php';
+@require 'include/Utility/kick-out.php';
 ?>
 
 <?php
 $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
+?>
+
+<?php
+LoginSessions::startSession();
+?>
+
+<?php
+kickOut($_SESSION['role'], true);
 ?>
 
 <!DOCTYPE html>
@@ -56,49 +65,9 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 					<!-- <a class="navbar-brand" href="#">Knowledge Room</a> -->
 				</div>
 				<div class="navbar-collapse collapse">
-					<ul class="nav navbar-nav">
-						<li><a href="index.php"><div class="fa fa-home"></div> Home</a></li>
-						<li><a href="newitem.php"><div class="fa fa-pencil"></div> New
-								item</a></li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown">Favourite <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="#"><div class="fa fa-star"></div> Most important</a></li>
-								<li><a href="#"><div class="fa fa-eye"></div> To watch</a></li>
-							</ul></li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown">Categories <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li class="dropdown-header">Top categories</li>
-								<li><a href="#"><div class="fa fa-list-ul"></div> Top category
-										list</a></li>
-								<li class="divider"></li>
-								<li class="dropdown-header">Sub categories</li>
-								<li><a href="#"><div class="fa fa-list"></div> Sub category list</a></li>
-							</ul></li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown">Admin <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li class="dropdown-header">Top categories</li>
-								<li><a href="#"><div class="fa fa-plus"></div> Add new top
-										category</a></li>
-								<li><a href="#"><div class="fa fa-trash-o"></div> Remove a top
-										category</a></li>
-								<li class="divider"></li>
-								<li class="dropdown-header">Sub categories</li>
-								<li><a href="#"><div class="fa fa-plus"></div> Add new sub
-										category</a></li>
-								<li><a href="#"><div class="fa fa-trash-o"></div> Remove a sub
-										category</a></li>
-								<li class="divider"></li>
-								<li class="dropdown-header">Items</li>
-								<li><a href="#"><div class="fa fa-pencil"></div> Add new item</a></li>
-								<li><a href="#"><div class="fa fa-eraser"></div> Remove item</a></li>
-							</ul></li>
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="signin.php">Sign in</a></li>
-					</ul>
+					<?php
+					include("include/Navbar/navbar.php");
+					?>
 				</div>
 				<!--/.nav-collapse -->
 			</div>

@@ -106,6 +106,62 @@ CREATE TABLE IF NOT EXISTS `knowledge_room`.`link` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `knowledge_room`.`favouriteItem`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `knowledge_room`.`favouriteItem` ;
+
+CREATE TABLE IF NOT EXISTS `knowledge_room`.`favouriteItem` (
+  `favouriteId` INT NOT NULL AUTO_INCREMENT,
+  `resourceTitle` VARCHAR(200) NOT NULL,
+  `star` TINYINT(1) NOT NULL,
+  `eye` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`favouriteId`),
+  INDEX `fk_favourite_resource_idx` (`resourceTitle` ASC),
+  UNIQUE INDEX `resourceTitle_UNIQUE` (`resourceTitle` ASC),
+  CONSTRAINT `fk_favourite_resource`
+    FOREIGN KEY (`resourceTitle`)
+    REFERENCES `knowledge_room`.`resource` (`title`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `knowledge_room`.`favouriteCategories`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `knowledge_room`.`favouriteCategories` ;
+
+CREATE TABLE IF NOT EXISTS `knowledge_room`.`favouriteCategories` (
+  `favouriteCategoriesId` INT NOT NULL AUTO_INCREMENT,
+  `favCategoryName` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`favouriteCategoriesId`),
+  INDEX `fk_favouriteCategories_topCategory1_idx` (`favCategoryName` ASC),
+  CONSTRAINT `fk_favouriteCategories_topCategory`
+    FOREIGN KEY (`favCategoryName`)
+    REFERENCES `knowledge_room`.`topCategory` (`categoryName`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `knowledge_room`.`user`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `knowledge_room`.`user` ;
+
+CREATE TABLE IF NOT EXISTS `knowledge_room`.`user` (
+  `userId` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `surname` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `role` INT NOT NULL,
+  PRIMARY KEY (`userId`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC))
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

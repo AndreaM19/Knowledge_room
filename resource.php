@@ -1,4 +1,3 @@
-
 <?php
 @ require 'include/DB/dbUtility.php';
 @ require 'include/DB/dbData.php';
@@ -7,6 +6,10 @@ require_once 'include/Auth/LoginSessions.php';
 
 <?php
 $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
+?>
+
+<?php
+LoginSessions::startSession();
 ?>
 
 <!DOCTYPE html>
@@ -56,49 +59,9 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 					<!-- <a class="navbar-brand" href="#">Knowledge Room</a> -->
 				</div>
 				<div class="navbar-collapse collapse">
-					<ul class="nav navbar-nav">
-						<li><a href="index.php"><div class="fa fa-home"></div>
-								Home</a></li>
-						<li><a href="newitem.php"><div class="fa fa-pencil"></div> New item</a></li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown">Favourite <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="#"><div class="fa fa-star"></div> Most important</a></li>
-								<li><a href="#"><div class="fa fa-eye"></div> To watch</a></li>
-							</ul></li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown">Categories <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li class="dropdown-header">Top categories</li>
-								<li><a href="#"><div class="fa fa-list-ul"></div> Top category
-										list</a></li>
-								<li class="divider"></li>
-								<li class="dropdown-header">Sub categories</li>
-								<li><a href="#"><div class="fa fa-list"></div> Sub category list</a></li>
-							</ul></li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown">Admin <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li class="dropdown-header">Top categories</li>
-								<li><a href="#"><div class="fa fa-plus"></div> Add new top
-										category</a></li>
-								<li><a href="#"><div class="fa fa-trash-o"></div> Remove a top
-										category</a></li>
-								<li class="divider"></li>
-								<li class="dropdown-header">Sub categories</li>
-								<li><a href="#"><div class="fa fa-plus"></div> Add new sub
-										category</a></li>
-								<li><a href="#"><div class="fa fa-trash-o"></div> Remove a sub
-										category</a></li>
-								<li class="divider"></li>
-								<li class="dropdown-header">Items</li>
-								<li><a href="#"><div class="fa fa-pencil"></div> Add new item</a></li>
-								<li><a href="#"><div class="fa fa-eraser"></div> Remove item</a></li>
-							</ul></li>
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="signin.php">Sign in</a></li>
-					</ul>
+					<?php
+					include("include/Navbar/navbar.php");
+					?>
 				</div>
 				<!--/.nav-collapse -->
 			</div>
@@ -117,11 +80,20 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 				<h5>You are in:</h5>
 				<h1><?php echo"" . $_GET ['cat'] . "";?></h1>
 				<h4>Subsection: <?php echo"" . $_GET ['subCat'] . "";?></h4>
+                
+                <?php
+				$queryText = "SELECT count(resourceId) AS total FROM resource WHERE subCategory='" . $_GET ['subCat'] . "'";
+				$query = dbUtility::queryToDB ( $dbConn, $queryText );
+				$data=mysqli_fetch_assoc($query);
+				echo"<h5>".$data['total']." Elements in this subcategory</h5>";
+				dbUtility::freeMemoryAfterQuery ( $query );
+				?>
 			</div>
 		</div>
 
 		<div class="col-md-12 contentDisplayer">
 			<br><br>
+			
 
 			<!-- Breadcrumbs Navigation -->
 			<ol class="breadcrumb">
@@ -129,7 +101,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 				<li><a href="<?php echo"subcategories.php?cat=" . $_GET ['cat'] . "";?>"><?php echo"" . $_GET ['cat'] . "";?></a></li>
 				<li class="active"><?php echo"" . $_GET ['subCat'] . "";?></li>
 			</ol>
-
+            
 			<div class="row">
 				<!--/span-->
 				<?php
@@ -138,16 +110,17 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 				$count = 0;
 				while ( $row = mysqli_fetch_array ( $query ) ) :
 					?>
-					<div class="col-md-1">
+					<div class="col-md-1 favourite">
 					<br>
-					<a href=#><div class="fa fa-star" style="margin-right: 10px; margin-left:20px;"></div></a>
-					<a href=#><div class="fa fa-eye"></div></a>
+					<a href="#" id="star"><div class="fa fa-star"></div></a>
+					<a href="#" id="eye"><div class="fa fa-eye"></div></a>
 					</div>
-					<div class="col-md-8">
+					<div class="col-md-11">
 					<?php
 					echo "<h3>" . $row ['title'] . "</h3><h4>" . $row ['annotationDate'] . "</h4>";
 					echo "<p class='text-justify'>" . $row ['description'] . "</p>";
 					echo "<h5><div class='fa ".$row ['linkIconName']."'></div> &nbsp;link: <a href='".$row ['linkPath']."' target='_blank' rel='nofollow'>".$row ['linkPath']."</a></h5>";
+					echo"<input type='hidden' name='title_".$count."' value='".$row ['title']."'>"
 					?>
 					<hr>
 					<br>
@@ -184,6 +157,30 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="js/jQuery/jquery.min.js"></script>
 	<script src="js/bootstrap/bootstrap.min.js"></script>
+	<!-- Ajax select -->
+	<script language="JavaScript" type="text/javascript">
+            $(function(){
+                $('#star').change(function(event){
+                    $.ajax({
+                        type: 'PUT',
+                        url: 'include/Ajax/favouriteQuery.php',
+                        data: "resourceTitle=" + $('#star').val(),
+                        success: setFavourite //If success call setFavourite function with param "data"
+                    });
+                });
+            });
+            
+            function setFavourite(data){
+                alert('Well done');
+                //$('#subCat').find('option').remove();
+                //$('#subCat').append('<option selected> -- Select a sub category -- </option>');
+                //$.each(data, function(key, val){
+                //    $('#subCat').append('<option>' + val + '</option>');
+                //});
+            }
+        </script>
+	
+	
 </body>
 </html>
 

@@ -9,7 +9,31 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 ?>
 
 <?php
-LoginSessions::startSession ();
+LoginSessions::startSession();
+if(isset($_SESSION['role']) & @$_GET['login']!="false")header("location:index.php");
+
+if(@$_GET['login']=="true"){
+		
+	$queryText="SELECT email, password, name, role FROM user";
+	$query=dbUtility::queryToDB($dbConn, $queryText);
+	while ($row = mysqli_fetch_array($query))
+	{
+		if($row['password']==$_POST['password'] && $row['email']==$_POST['email'])
+		{			
+			echo"<script>alert('".$_POST['email']." - ".$_POST['password']."')</script>";
+			$_SESSION['role']=$row['role'];
+			$_SESSION['user']=$row['name'];
+			$_SESSION['userMail']=$row['email'];
+			$_SESSION['userImg']="user_data/".$row['name']."/avatar.jpg";
+			header("location:index.php");
+		}
+	}
+	dbUtility::freeMemoryAfterQuery($query);
+}
+else if(@$_GET['login']=="false"){
+	LoginSessions::stopSession("index.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +71,7 @@ LoginSessions::startSession ();
 	<!-- Container -->
 	<div class="container">
 		<!-- Static navbar -->
-		<div class="navbar navbar-default navbar-orange" level="navigation">
+		<div class="navbar navbar-default navbar-orange" role="navigation">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -60,7 +84,7 @@ LoginSessions::startSession ();
 				</div>
 				<div class="navbar-collapse collapse">
 					<?php
-					include ("include/Navbar/navbar.php");
+					include("include/Navbar/navbar.php");
 					?>
 				</div>
 				<!--/.nav-collapse -->
@@ -76,62 +100,53 @@ LoginSessions::startSession ();
 
 			<!-- Right side menu -->
 			<div class="col-md-4 topSlogan text-center">
-				<h1>Welcome to the knowledge room</h1>
-				<h5>Your personal knowledge base</h5>
-				<a class="btn btn-warning" href="newitem.php">INCREASES!!</a>
+				<h1>Reserved area</h1>
+				<h5>Manage contents</h5>
 			</div>
 		</div>
 
 		<div class="col-md-12 contentDisplayer">
 			<br>
-			<h4 class="text-center" style="color: #F60;">Click on one of the
-				category below to know more about something...or add a new item!!</h4>
+			<h4 class="text-center" style="color: #F60;">
+            <?php
+			if(@$_GET['msg']=="auth required") echo"Autentication is required to use this function!";
+			else echo"Sign in for discover reserved functions!";
+			?>
+            </h4>
 			<hr>
-
-			<!-- Breadcrumbs Navigation -->
-			<!--<ol class="breadcrumb">
-				<li><a href="#">Home</a></li>
-				<li><a href="#">Library</a></li>
-				<li class="active">Data</li>
-			</ol>-->
-
-			<div class="row">
-				<!--/span-->
-				<?php
-				$queryText = "SELECT * FROM topCategory ORDER BY categoryName ASC";
-				$query = dbUtility::queryToDB ( $dbConn, $queryText );
-				while ( $row = mysqli_fetch_array ( $query ) ) :
-					?>
-					<div class="col-md-4 catBox">
-					<?php
-					echo "<h2>" . $row ['categoryName'] . "</h2>";
-					echo "<p>" . $row ['categoryDescription'] . "</p>";
-					?>
-					<p>
-						<a class="btn btn-default"
-							href="<?php echo"subcategories.php?cat=" . $row ['categoryName'] . "";?>"
-							level="button">View more... &raquo;</a>
-					</p>
-				</div>
-				<?php
-				endwhile
-				;
-				dbUtility::freeMemoryAfterQuery ( $query );
-				?>
-				
+			
+			<div class="col-md-1"></div>
+			
+			<div class="col-md-4">
+			<br>
+			<br>
+			<form class="form-signin" style="margin-top:-40px;" role="form" action="signin.php?login=true"
+				method="post">
+				<h4 class="form-signin-heading">Please sign in</h4>
+				<input type="email" class="form-control" placeholder="Email address" required autofocus name="email"> 
+				<br>
+				<input type="password" class="form-control" placeholder="Password" required name="password">
+				<label class="checkbox"> <input type="checkbox" value="remember-me"> Remember me</label>
+				<button class="btn btn-warning btn-primary btn-block" type="submit">Sign in</button>
+			</form>
+			<br>
+			<br>
 			</div>
-			<!--/row-->
-
-			<br>
-			<br>
+			
+			<div class="col-md-2"></div>
+			
+			<div class="col-md-4">
+			<h3>This is the reserved door for the knowledge...</h3>
+			<h5>Sign in for add and manage contents from the Knowledge room</h5>
+			<div class="fa fa-sign-in" style="font-size: 60px;"></div>
+			</div>
+			<div class="col-md-1"></div>
+			
 		</div>
 
 		<footer>
 			<div class="col-md-12 footerContainer text-left">
-				<h6>
-					&copy; Knowledge room: your personal web knowledge base - Design by
-					<a href="">Andrea Marchetti</a>
-				</h6>
+				<h6>&copy; Knowledge room: your personal web knowledge base - Design by <a href="">Andrea Marchetti</a></h6>
 			</div>
 		</footer>
 
