@@ -9,29 +9,27 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 ?>
 
 <?php
-LoginSessions::startSession();
-if(isset($_SESSION['role']) & @$_GET['login']!="false")header("location:index.php");
+LoginSessions::startSession ();
+if (isset ( $_SESSION ['role'] ) & @$_GET ['login'] != "false")
+	header ( "location:index.php" );
 
-if(@$_GET['login']=="true"){
-		
-	$queryText="SELECT email, password, name, role FROM user";
-	$query=dbUtility::queryToDB($dbConn, $queryText);
-	while ($row = mysqli_fetch_array($query))
-	{
-		if($row['password']==$_POST['password'] && $row['email']==$_POST['email'])
-		{			
-			echo"<script>alert('".$_POST['email']." - ".$_POST['password']."')</script>";
-			$_SESSION['role']=$row['role'];
-			$_SESSION['user']=$row['name'];
-			$_SESSION['userMail']=$row['email'];
-			$_SESSION['userImg']="user_data/".$row['name']."/avatar.jpg";
-			header("location:index.php");
+if (@$_GET ['login'] == "true") {
+	
+	$queryText = "SELECT email, password, name, role FROM user";
+	$query = dbUtility::queryToDB ( $dbConn, $queryText );
+	while ( $row = mysqli_fetch_array ( $query ) ) {
+		if ($row ['password'] == md5 ( $_POST ['password'] ) && $row ['email'] == $_POST ['email']) {
+			echo "<script>alert('" . $_POST ['email'] . " - " . $_POST ['password'] . "')</script>";
+			$_SESSION ['role'] = $row ['role'];
+			$_SESSION ['user'] = $row ['name'];
+			$_SESSION ['userMail'] = $row ['email'];
+			$_SESSION ['userImg'] = "user_data/" . $row ['name'] . "/avatar.jpg";
+			header ( "location:index.php" );
 		}
 	}
-	dbUtility::freeMemoryAfterQuery($query);
-}
-else if(@$_GET['login']=="false"){
-	LoginSessions::stopSession("index.php");
+	dbUtility::freeMemoryAfterQuery ( $query );
+} else if (@$_GET ['login'] == "false") {
+	LoginSessions::stopSession ( "index.php" );
 }
 
 ?>
@@ -84,7 +82,7 @@ else if(@$_GET['login']=="false"){
 				</div>
 				<div class="navbar-collapse collapse">
 					<?php
-					include("include/Navbar/navbar.php");
+					include ("include/Navbar/navbar.php");
 					?>
 				</div>
 				<!--/.nav-collapse -->
@@ -109,45 +107,48 @@ else if(@$_GET['login']=="false"){
 			<br>
 			<h4 class="text-center" style="color: #F60;">
             <?php
-			if(@$_GET['msg']=="auth required") echo"Autentication is required to use this function!";
-			else echo"Sign in for discover reserved functions!";
-			?>
+												if (@$_GET ['msg'] == "auth required")
+													echo "Autentication is required to use this function!";
+												else
+													echo "Sign in for discover reserved functions!";
+												?>
             </h4>
 			<hr>
-			
+
 			<div class="col-md-1"></div>
-			
+
 			<div class="col-md-4">
-			<br>
-			<br>
-			<form class="form-signin" style="margin-top:-40px;" role="form" action="signin.php?login=true"
-				method="post">
-				<h4 class="form-signin-heading">Please sign in</h4>
-				<input type="email" class="form-control" placeholder="Email address" required autofocus name="email"> 
-				<br>
-				<input type="password" class="form-control" placeholder="Password" required name="password">
-				<label class="checkbox"> <input type="checkbox" value="remember-me"> Remember me</label>
-				<button class="btn btn-warning btn-primary btn-block" type="submit">Sign in</button>
-			</form>
-			<br>
-			<br>
+				<br> <br>
+				<form class="form-signin" style="margin-top: -40px;" role="form"
+					action="signin.php?login=true" method="post">
+					<h4 class="form-signin-heading">Please sign in</h4>
+					<input type="email" class="form-control"
+						placeholder="Email address" required autofocus name="email"> <br>
+					<input type="password" class="form-control" placeholder="Password"
+						required name="password"> <label class="checkbox"> <input
+						type="checkbox" value="remember-me"> Remember me
+					</label>
+					<button class="btn btn-warning btn-primary btn-block" type="submit">Sign
+						in</button>
+				</form>
+				<br> <br>
 			</div>
-			
+
 			<div class="col-md-2"></div>
-			
+
 			<div class="col-md-4">
-			<h3>This is the reserved door for the knowledge...</h3>
-			<h5>Sign in for add and manage contents from the Knowledge room</h5>
-			<div class="fa fa-sign-in" style="font-size: 60px;"></div>
+				<h3>This is the reserved door for the knowledge...</h3>
+				<h5>Sign in for add and manage contents from the Knowledge room</h5>
+				<div class="fa fa-sign-in" style="font-size: 60px;"></div>
 			</div>
 			<div class="col-md-1"></div>
-			
+
 		</div>
 
 		<footer>
-			<div class="col-md-12 footerContainer text-left">
-				<h6>&copy; Knowledge room: your personal web knowledge base - Design by <a href="">Andrea Marchetti</a></h6>
-			</div>
+			<?php
+			include ("include/Footer/footer.php");
+			?>
 		</footer>
 
 		<!-- End of container -->

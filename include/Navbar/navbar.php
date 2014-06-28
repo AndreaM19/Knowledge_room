@@ -4,7 +4,7 @@
 	<?php if(@$_SESSION['role']==1 | @$_SESSION['role']==10)include("navbar-components/newitem.php")?>
                         
    	<!-- Favourite -->
-	<?php if(@$_SESSION['role']==1 | @$_SESSION['role']==10)include("navbar-components/favourite.php")?>
+	<?php //if(@$_SESSION['role']==1 | @$_SESSION['role']==10)include("navbar-components/favourite.php")?>
                         
    	<!-- Categories -->
 	<?php include("navbar-components/categories.php")?>
@@ -14,5 +14,6 @@
 	</ul>
 
 <ul class="nav navbar-nav navbar-right">
+	<?php include("navbar-components/search.php")?>
     <?php include("navbar-components/login.php")?>
 <ul>

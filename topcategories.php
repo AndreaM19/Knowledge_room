@@ -9,7 +9,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 ?>
 
 <?php
-LoginSessions::startSession();
+LoginSessions::startSession ();
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +60,7 @@ LoginSessions::startSession();
 				</div>
 				<div class="navbar-collapse collapse">
 					<?php
-					include("include/Navbar/navbar.php");
+					include ("include/Navbar/navbar.php");
 					?>
 				</div>
 				<!--/.nav-collapse -->
@@ -87,18 +87,18 @@ LoginSessions::startSession();
 			<h4 class="text-center" style="color: #F60;">Click on one of the
 				category below to know more about something...or add a new item!!</h4>
 			<hr>
-			
+
 			<!-- Breadcrumbs Navigation -->
 			<!--<ol class="breadcrumb">
 				<li><a href="#">Home</a></li>
 				<li><a href="#">Library</a></li>
 				<li class="active">Data</li>
 			</ol>-->
-			
+
 			<div class="row">
 				<!--/span-->
 				<?php
-				$queryText = "SELECT * FROM topCategory ORDER BY categoryName ASC";
+				$queryText = "SELECT * FROM topcategory ORDER BY categoryName ASC";
 				$query = dbUtility::queryToDB ( $dbConn, $queryText );
 				while ( $row = mysqli_fetch_array ( $query ) ) :
 					?>
@@ -121,14 +121,15 @@ LoginSessions::startSession();
 				
 			</div>
 			<!--/row-->
-            
-            <br><br>
+
+			<br>
+			<br>
 		</div>
 
 		<footer>
-			<div class="col-md-12 footerContainer text-left">
-				<h6>&copy; Knowledge room: your personal web knowledge base - Design by <a href="">Andrea Marchetti</a></h6>
-			</div>
+			<?php
+			include ("include/Footer/footer.php");
+			?>
 		</footer>
 
 		<!-- End of container -->

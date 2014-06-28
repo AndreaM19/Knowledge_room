@@ -83,54 +83,53 @@ LoginSessions::startSession ();
 		</div>
 
 		<div class="col-md-12 contentDisplayer">
-	        <h2>User profile details</h2>
+			<h2>User profile details</h2>
 			<br>
-            <div class="col-md-3">
+			<div class="col-md-3">
             <?php
-			$queryText="SELECT email, password, name, surname, role FROM user WHERE email='".$_SESSION ['userMail']."'";
-			$query=dbUtility::queryToDB($dbConn, $queryText);
-			while ( $row = mysqli_fetch_array ( $query ) ){
-				$name=$row['name'];
-				$surname=$row['surname'];
-				$email=$row['email'];
-				$role=$row['role'];
-			}
-			dbUtility::freeMemoryAfterQuery($query);
-			
-            echo"<img src='" . $_SESSION ['userImg'] . "' class='img-circle img-responsive' style='width:180px;' alt'".$name." ".$surname."' title'".$name." ".$surname."'>";
+												$queryText = "SELECT email, password, name, surname, role, userDescription FROM user WHERE email='" . $_SESSION ['userMail'] . "'";
+												$query = dbUtility::queryToDB ( $dbConn, $queryText );
+												while ( $row = mysqli_fetch_array ( $query ) ) {
+													$name = $row ['name'];
+													$surname = $row ['surname'];
+													$email = $row ['email'];
+													$role = $row ['role'];
+													$desc = $row ['userDescription'];
+												}
+												dbUtility::freeMemoryAfterQuery ( $query );
+												
+												echo "<img src='" . $_SESSION ['userImg'] . "' class='img-circle img-responsive' style='width:180px;' alt'" . $name . " " . $surname . "' title'" . $name . " " . $surname . "'>";
+												?>
+            <br>
+				<br>
+			</div>
+
+			<div class="col-md-6">
+			<?php
+			echo "<h3>Name: " . $name . "</h3>";
+			echo "<h3>Surname: " . $surname . "</h3>";
+			echo "<br>";
+			echo "<h4>Registered mail: " . $email . "</h4>";
+			echo "<br>";
+			echo "<h4>Description:</h4>";
+			echo "<p>" . $desc . "</p>";
+			echo "<br><br>";
 			?>
-            <br><br>
             </div>
-            
-            <div class="col-md-6">
-			<?php			
-			echo"<h3>Name: ".$name."</h3>";
-			echo"<h3>Surname: ".$surname."</h3>";
-			echo"<br>";
-			echo"<h4>Registered mail: ".$email."</h4>";
-			echo"<br>";
-			echo"<h4>Description:</h4>";
-			echo"<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
-			echo"<br><br>";
-			?>
-            </div>
-            
-            <div class="col-md-3">
+
+			<div class="col-md-3">
             <?php
-            echo"<img src='img/icon/role/".$role.".png' style='width:50px;' alt'".$role."'>";
-            echo"<h4>Role: ".$role."</h4>";
-            ?>
+												echo "<img src='img/icon/role/" . $role . ".png' style='width:50px;' alt'" . $role . "'>";
+												echo "<h4>Role: " . $role . "</h4>";
+												?>
             
             </div>
 		</div>
 
 		<footer>
-			<div class="col-md-12 footerContainer text-left">
-				<h6>
-					&copy; Knowledge room: your personal web knowledge base - Design by
-					<a href="">Andrea Marchetti</a>
-				</h6>
-			</div>
+			<?php
+			include ("include/Footer/footer.php");
+			?>
 		</footer>
 
 		<!-- End of container -->

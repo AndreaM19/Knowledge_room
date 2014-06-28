@@ -9,7 +9,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 ?>
 
 <?php
-LoginSessions::startSession();
+LoginSessions::startSession ();
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +60,7 @@ LoginSessions::startSession();
 				</div>
 				<div class="navbar-collapse collapse">
 					<?php
-					include("include/Navbar/navbar.php");
+					include ("include/Navbar/navbar.php");
 					?>
 				</div>
 				<!--/.nav-collapse -->
@@ -82,46 +82,46 @@ LoginSessions::startSession();
 				<h4>Subsection: <?php echo"" . $_GET ['subCat'] . "";?></h4>
                 
                 <?php
-				$queryText = "SELECT count(resourceId) AS total FROM resource WHERE subCategory='" . $_GET ['subCat'] . "'";
-				$query = dbUtility::queryToDB ( $dbConn, $queryText );
-				$data=mysqli_fetch_assoc($query);
-				echo"<h5>".$data['total']." Elements in this subcategory</h5>";
-				dbUtility::freeMemoryAfterQuery ( $query );
-				?>
+																$queryText = "SELECT count(resourceId) AS total FROM resource WHERE subcategory='" . $_GET ['subCat'] . "'";
+																$query = dbUtility::queryToDB ( $dbConn, $queryText );
+																$data = mysqli_fetch_assoc ( $query );
+																echo "<h5>" . $data ['total'] . " Elements in this subcategory</h5>";
+																dbUtility::freeMemoryAfterQuery ( $query );
+																?>
 			</div>
 		</div>
 
 		<div class="col-md-12 contentDisplayer">
-			<br><br>
-			
+			<br>
+			<br>
+
 
 			<!-- Breadcrumbs Navigation -->
 			<ol class="breadcrumb">
 				<li><a href="index.php">Home</a></li>
-				<li><a href="<?php echo"subcategories.php?cat=" . $_GET ['cat'] . "";?>"><?php echo"" . $_GET ['cat'] . "";?></a></li>
+				<li><a
+					href="<?php echo"subcategories.php?cat=" . $_GET ['cat'] . "";?>"><?php echo"" . $_GET ['cat'] . "";?></a></li>
 				<li class="active"><?php echo"" . $_GET ['subCat'] . "";?></li>
 			</ol>
-            
+
 			<div class="row">
 				<!--/span-->
 				<?php
-				$queryText = "SELECT * FROM resource INNER JOIN link ON title=resource INNER JOIN linkType ON linkType=type WHERE subCategory='" . $_GET ['subCat'] . "'";
+				$queryText = "SELECT * FROM resource INNER JOIN link ON title=resource INNER JOIN linktype ON linkType=type WHERE subCategory='" . $_GET ['subCat'] . "'";
 				$query = dbUtility::queryToDB ( $dbConn, $queryText );
 				$count = 0;
 				while ( $row = mysqli_fetch_array ( $query ) ) :
 					?>
 					<div class="col-md-1 favourite">
-					<br>
-					<a href="#" id="star"><div class="fa fa-star"></div></a>
-					<a href="#" id="eye"><div class="fa fa-eye"></div></a>
-					</div>
-					<div class="col-md-11">
+					<br> <a href="#" id="star"><div class="fa fa-star"></div></a> <a
+						href="#" id="eye"><div class="fa fa-eye"></div></a>
+				</div>
+				<div class="col-md-11">
 					<?php
 					echo "<h3>" . $row ['title'] . "</h3><h4>" . $row ['annotationDate'] . "</h4>";
 					echo "<p class='text-justify'>" . $row ['description'] . "</p>";
-					echo "<h5><div class='fa ".$row ['linkIconName']."'></div> &nbsp;link: <a href='".$row ['linkPath']."' target='_blank' rel='nofollow'>".$row ['linkPath']."</a></h5>";
-					echo"<input type='hidden' name='title_".$count."' value='".$row ['title']."'>"
-					?>
+					echo "<h5><div class='fa " . $row ['linkIconName'] . "'></div> &nbsp;link: <a href='" . $row ['linkPath'] . "' target='_blank' rel='nofollow'>" . $row ['linkPath'] . "</a></h5>";
+					echo "<input type='hidden' name='title_" . $count . "' value='" . $row ['title'] . "'>"?>
 					<hr>
 					<br>
 				</div>
@@ -139,12 +139,9 @@ LoginSessions::startSession();
 		</div>
 
 		<footer>
-			<div class="col-md-12 footerContainer text-left">
-				<h6>
-					&copy; Knowledge room: your personal web knowledge base - Design by
-					<a href="">Andrea Marchetti</a>
-				</h6>
-			</div>
+			<?php
+			include ("include/Footer/footer.php");
+			?>
 		</footer>
 
 		<!-- End of container -->
@@ -179,8 +176,8 @@ LoginSessions::startSession();
                 //});
             }
         </script>
-	
-	
+
+
 </body>
 </html>
 

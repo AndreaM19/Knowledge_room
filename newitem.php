@@ -10,11 +10,11 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 ?>
 
 <?php
-LoginSessions::startSession();
+LoginSessions::startSession ();
 ?>
 
 <?php
-kickOut($_SESSION['role'], true);
+kickOut ( $_SESSION ['role'], true );
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +66,7 @@ kickOut($_SESSION['role'], true);
 				</div>
 				<div class="navbar-collapse collapse">
 					<?php
-					include("include/Navbar/navbar.php");
+					include ("include/Navbar/navbar.php");
 					?>
 				</div>
 				<!--/.nav-collapse -->
@@ -93,59 +93,79 @@ kickOut($_SESSION['role'], true);
 					<div class="fa fa-pencil" style="font-size: 40px;"></div>
 					Write a new item
 				</h2>
-				<form class=" form-addItem">
+				<form class="form-addItem" action="newitem.php?addItem=1"
+					method="post">
 					<div class="col-md-6">
 						<h4>Title</h4>
 						<input type="text" size="70" value="Insert item title here"
-							autofocus> <br>
+							autofocus name="title"> <br> <br>
+
+						<h4>
+							<div class="fa fa-list-ul"></div>
+							Top category <select id="topCat" name="topCategory">
+								<option value="-">-- Select a top category --</option>
+			                <?php
+																			$queryText = "SELECT categoryName FROM topcategory";
+																			$query = dbUtility::queryToDB ( $dbConn, $queryText );
+																			while ( $row = mysqli_fetch_array ( $query ) ) :
+																				echo "<option value='" . $row ['categoryName'] . "'>" . $row ['categoryName'] . "</option>";
+																			endwhile
+																			;
+																			dbUtility::freeMemoryAfterQuery ( $query );
+																			?>
+			                </select>
+						</h4>
+
+						<br>
+						<h4>
+							<div class="fa fa-list-ul"></div>
+							Sub category <select id="subCat" name="subCategory" disabled>
+								<option value="-">--</option>
+							</select>
+						</h4>
+						<br>
+						<h4>Some comments? :-D</h4>
+						<textarea rows="10" cols="80" name="comment"></textarea>
+						<br> <br> <br>
+					</div>
+
+					<div class="col-md-6">
 						<h4>
 							<div class="fa fa-link"></div>
 							Link
 						</h4>
-						<input type="text" size="70" value="Insert item link here"> <br> <br>
-						<br>
-						<h4>Some comments? :-D</h4>
-						<textarea rows="10" cols="80"></textarea>
-						<br> <br> <br>
-					</div>
-					<div class="col-md-6">
-						<br>
-						<h4>
-							<div class="fa fa-list-ul"></div>
-							Top category <select id="topCat">
-								<option value="-">-- Select a top category --</option>
-                <?php
-																$queryText = "SELECT categoryName FROM topCategory";
-																$query = dbUtility::queryToDB ( $dbConn, $queryText );
-																while ( $row = mysqli_fetch_array ( $query ) ) :
-																	echo "<option value='" . $row ['categoryName'] . "'>" . $row ['categoryName'] . "</option>";
-																endwhile
-																;
-																dbUtility::freeMemoryAfterQuery ( $query );
-																?>
-                </select>
+						<input type="text" size="70" value="Insert item link here"
+							name="link"> <br> <br> <br>
+						<div class="fa fa-link"></div>
+						Link Type <select name="linkType">
+							<option value="-">-- Select a Link Type --</option>
+		                <?php
+																		$queryText = "SELECT type FROM linktype ORDER BY type ASC";
+																		$query = dbUtility::queryToDB ( $dbConn, $queryText );
+																		while ( $row = mysqli_fetch_array ( $query ) ) :
+																			echo "<option value='" . $row ['type'] . "'>" . $row ['type'] . "</option>";
+																		endwhile
+																		;
+																		dbUtility::freeMemoryAfterQuery ( $query );
+																		?>
+						</select>
 						</h4>
-
-						<br>
-						<h4>
-							<div class="fa fa-list-ul"></div>
-							Sub category <select id="subCat" disabled>
-								<option value="-"> -- </option>
-
-							</select>
-						</h4>
+						<br> <br>
 					</div>
+
+					<div class="col-md-12">
+						<button class="btn btn-warning" type="submit">Proceed</button>
+						<br> <br>
+					</div>
+
 				</form>
 			</div>
 		</div>
 
 		<footer>
-			<div class="col-md-12 footerContainer text-left">
-				<h6>
-					&copy; Knowledge room: your personal web knowledge base - Design by
-					<a href="">Andrea Marchetti</a>
-				</h6>
-			</div>
+			<?php
+			include ("include/Footer/footer.php");
+			?>
 		</footer>
 
 		<!-- End of container -->
@@ -158,7 +178,8 @@ kickOut($_SESSION['role'], true);
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="js/jQuery/jquery.min.js"></script>
 	<script src="js/bootstrap/bootstrap.min.js"></script>
-	
+	<script src="js/custom/customFunctions.js"></script>
+
 	<!-- Ajax select -->
 	<script language="JavaScript" type="text/javascript">
             $(function(){
@@ -186,7 +207,7 @@ kickOut($_SESSION['role'], true);
             function selectActivator(){
             	selectValue=$('select#topCat').val();//get select value
             	if(selectValue!='-'){
-            		$('select#subCat').removeAttr('disabled');
+            		$('select#subCat').removeAttr('disabled');	
             	}
             	else {
             		$('select#subCat').attr('disabled','disabled');
@@ -194,8 +215,77 @@ kickOut($_SESSION['role'], true);
             }
         </script>
 
+
+	<!-- Success -->
+	<div class="modal fade" id="successBox" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h3 class="modal-title" id="myModalLabel">Item added with success</h3>
+				</div>
+				<div class="modal-body">
+					<h4>Data inserts:</h4>
+					<h5>Title: <?php echo $_POST['title']?></h5>
+					<h5>Link: <?php echo $_POST['link']?></h5>
+					<h5>Top category: <?php echo $_POST['topCategory']?></h5>
+					<h5>Sub category: <?php echo $_POST['subCategory']?></h5>
+					<h5>Comments:</h5>
+					<p><?php echo $_POST['comment']?></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Error -->
+	<div class="modal fade" id="errorBox" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h3 class="modal-title" id="myModalLabel">Error</h3>
+				</div>
+				<div class="modal-body">
+					<h4>An error occourred</h4>
+					<h5>Unable to insert data in the Knowledge Room</h5>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
+
+<?php
+$success_1 = false;
+$success_2 = false;
+if (isset ( $_GET ['addItem'] ) & @$_GET ['addItem'] == 1) {
+	$queryText_1 = "INSERT INTO resource (resourceId, title, annotationDate, description, subCategory) VALUES (NULL, '" . $_POST ['title'] . "', '25-06-2014', '" . $_POST ['comment'] . "', '" . $_POST ['subCategory'] . "')";
+	
+	$queryText_2 = "INSERT INTO link (linkId, linkPath, linkType, resource) VALUES (NULL, '" . $_POST ['link'] . "', '" . $_POST ['linkType'] . "', '" . $_POST ['title'] . "')";
+	
+	if (dbUtility::queryToDB ( $dbConn, $queryText_1 ))
+		$success_1 = true;
+	if (dbUtility::queryToDB ( $dbConn, $queryText_2 ))
+		$success_2 = true;
+	dbUtility::freeMemoryAfterQuery ( $query );
+	
+	if ($success_1 & $success_2) {
+		echo "<script type='text/javascript'>showModalBox('#successBox');</script>";
+	} else {
+		echo "<script type='text/javascript'>showModalBox('#errorBox');</script>";
+	}
+}
+?>
 
 <?php
 dbUtility::disconnectFromDB ( $dbConn );

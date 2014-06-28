@@ -88,39 +88,52 @@ LoginSessions::startSession ();
 				you can:</h4>
 			<hr>
 
-			<div class="col-md-4 text-center">
-				<h3>search what you want...</h3>
-				<br> <a href="searchresult.php"><img src="img/icon/home/search.png"
-					class="home-icons"></a> <br>
+			<div class="col-md-3 text-center">
+				<br> <img src="img/icon/home/search.png" class="home-icons"> <br>
 				<br>
 				<br>
 				<br>
 			</div>
 
-			<div class="col-md-4 text-center">
-				<h3>...or explore the top categories...</h3>
-				<br> <a href="topcategories.php"><img
-					src="img/icon/home/categories.jpg" class="home-icons"></a> <br>
-				<br>
-				<br>
-				<br>
+			<div class="col-md-6">
+				<h2>Search what you want...</h2>
+				<h5>Insert a keyword in the search field</h5>
+				<form class="navbar-form navbar-left" role="search"
+					action="searchresult.php?showResult=1" method="post">
+					<div class="form-group">
+						<input type="text" class="form-control"
+							placeholder="write something..." name="keyword"
+							style="height: 50px; width: 440px; font-size: 24px; margin-left: -20px;">
+					</div>
+					<button type="submit" class="btn btn-warning" style="height: 50px;">Search</button>
+				</form>
 			</div>
 
-			<div class="col-md-4 text-center">
-				<h3>...or increase the knowledge!!</h3>
-				<br> <a href="newitem.php"><img src="img/icon/home/pencil.gif"
-					class="home-icons"></a> <br>
+
+			<div class="col-md-3 text-center">
 				<br>
-				<br>
-				<br>
+				<h4>Most used keywords:</h4>
 			</div>
+
+			<div class="col-md-12">
+				<?php
+				if (@$_GET ['showResult'] != 1)
+					echo "<br><br><br><br>";
+				
+				else if (@$_GET ['showResult'] == 1) {
+					echo "<hr>";
+					echo "<h3>Search results for keyword " . $_POST ['keyword'] . ":</h3>";
+					echo "<br><br>";
+				}
+				?>
+            </div>
 
 		</div>
 
 		<footer>
 			<?php
 			include ("include/Footer/footer.php");
-			?>
+			?>	
 		</footer>
 
 		<!-- End of container -->

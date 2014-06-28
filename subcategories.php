@@ -9,7 +9,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 ?>
 
 <?php
-LoginSessions::startSession();
+LoginSessions::startSession ();
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +60,7 @@ LoginSessions::startSession();
 				</div>
 				<div class="navbar-collapse collapse">
 					<?php
-					include("include/Navbar/navbar.php");
+					include ("include/Navbar/navbar.php");
 					?>
 				</div>
 				<!--/.nav-collapse -->
@@ -83,7 +83,8 @@ LoginSessions::startSession();
 		</div>
 
 		<div class="col-md-12 contentDisplayer">
-			<br><br>
+			<br>
+			<br>
 
 			<!-- Breadcrumbs Navigation -->
 			<ol class="breadcrumb">
@@ -94,10 +95,12 @@ LoginSessions::startSession();
 			<div class="row">
 				<!--/span-->
 				<?php
-				$queryParam="";
-				if ($_GET['cat']=="All subcategories");
-				else $queryParam="WHERE topCategory='" . $_GET ['cat'] . "'";
-				$queryText = "SELECT * FROM subCategory ".$queryParam."";
+				$queryParam = "";
+				if ($_GET ['cat'] == "All subcategories")
+					;
+				else
+					$queryParam = "WHERE topcategory='" . $_GET ['cat'] . "'";
+				$queryText = "SELECT * FROM subcategory " . $queryParam . "";
 				$query = dbUtility::queryToDB ( $dbConn, $queryText );
 				$count = 0;
 				while ( $row = mysqli_fetch_array ( $query ) ) :
@@ -128,12 +131,9 @@ LoginSessions::startSession();
 		</div>
 
 		<footer>
-			<div class="col-md-12 footerContainer text-left">
-				<h6>
-					&copy; Knowledge room: your personal web knowledge base - Design by
-					<a href="">Andrea Marchetti</a>
-				</h6>
-			</div>
+			<?php
+			include ("include/Footer/footer.php");
+			?>
 		</footer>
 
 		<!-- End of container -->
