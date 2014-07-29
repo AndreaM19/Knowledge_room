@@ -98,7 +98,7 @@ LoginSessions::startSession ();
 
 			<!-- Breadcrumbs Navigation -->
 			<ol class="breadcrumb">
-				<li><a href="index.php">Home</a></li>
+				<li><a href="topcategories.php">Top categories</a></li>
 				<li><a
 					href="<?php echo"subcategories.php?cat=" . $_GET ['cat'] . "";?>"><?php echo"" . $_GET ['cat'] . "";?></a></li>
 				<li class="active"><?php echo"" . $_GET ['subCat'] . "";?></li>
@@ -107,7 +107,7 @@ LoginSessions::startSession ();
 			<div class="row">
 				<!--/span-->
 				<?php
-				$queryText = "SELECT * FROM resource INNER JOIN link ON title=resource INNER JOIN linktype ON linkType=type WHERE subCategory='" . $_GET ['subCat'] . "'";
+				$queryText = "SELECT * FROM resource INNER JOIN link ON title=resource INNER JOIN linktype ON linkType=type WHERE subCategory='" . $_GET ['subCat'] . "' ORDER BY annotationDate DESC";
 				$query = dbUtility::queryToDB ( $dbConn, $queryText );
 				$count = 0;
 				while ( $row = mysqli_fetch_array ( $query ) ) :
@@ -118,7 +118,9 @@ LoginSessions::startSession ();
 				</div>
 				<div class="col-md-11">
 					<?php
-					echo "<h3>" . $row ['title'] . "</h3><h4>" . $row ['annotationDate'] . "</h4>";
+					$lang="";
+					if($row ['language']!=NULL)$lang=" (".$row ['language'].")";
+					echo "<h3>" . $row ['title'] . "".$lang."</h3><h4>" . $row ['annotationDate'] . "</h4>";
 					echo "<p class='text-justify'>" . $row ['description'] . "</p>";
 					echo "<h5><div class='fa " . $row ['linkIconName'] . "'></div> &nbsp;link: <a href='" . $row ['linkPath'] . "' target='_blank' rel='nofollow'>" . $row ['linkPath'] . "</a></h5>";
 					echo "<input type='hidden' name='title_" . $count . "' value='" . $row ['title'] . "'>"?>

@@ -33,6 +33,12 @@
   }
 }
 
+@media (max-width: 992px) { 
+  .hidable{
+	  display:none;
+  }
+}
+
 .navbar-orange .navbar-collapse,
 .navbar-orange .navbar-form {
   border-color: #FF6600;

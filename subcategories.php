@@ -88,7 +88,7 @@ LoginSessions::startSession ();
 
 			<!-- Breadcrumbs Navigation -->
 			<ol class="breadcrumb">
-				<li><a href="index.php">Home</a></li>
+				<li><a href="topcategories.php">Top categories</a></li>
 				<li class="active"><?php echo"" . $_GET ['cat'] . "";?></li>
 			</ol>
 
@@ -108,6 +108,7 @@ LoginSessions::startSession ();
 					<div class="col-md-4 catBox">
 					<?php
 					echo "<h2>" . $row ['subCategoryName'] . "</h2>";
+					echo "<h5 class='itemCounter'>Elements:" . dbUtility::itemCounter($dbConn, $row ['subCategoryName']) . "</h5>";
 					echo "<p>" . $row ['subCategoryDescription'] . "</p>";
 					?>
 					<p>

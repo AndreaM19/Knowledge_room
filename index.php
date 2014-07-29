@@ -78,7 +78,7 @@ LoginSessions::startSession ();
 			<div class="col-md-4 topSlogan text-center">
 				<h1>Welcome to the knowledge room</h1>
 				<h5>Your personal knowledge base</h5>
-				<a class="btn btn-warning" href="newitem.php">INCREASES!!</a>
+				<a class="btn btn-warning" href="admin.php?action=addItem">INCREASES!!</a>
 			</div>
 		</div>
 
@@ -108,7 +108,7 @@ LoginSessions::startSession ();
 
 			<div class="col-md-4 text-center">
 				<h3>...or increase the knowledge!!</h3>
-				<br> <a href="newitem.php"><img src="img/icon/home/pencil.gif"
+				<br> <a href="admin.php?action=addItem"><img src="img/icon/home/pencil.gif"
 					class="home-icons"></a> <br>
 				<br>
 				<br>

@@ -82,84 +82,39 @@ kickOut ( $_SESSION ['role'], true );
 
 			<!-- Right side menu -->
 			<div class="col-md-4 topSlogan text-center">
-				<h1>New knowledge item</h1>
-				<h5>Tell me about something...</h5>
+				<h1>Admin</h1>
+				<h5>The knowledge room settings</h5>
 			</div>
 		</div>
 
 		<div class="col-md-12 contentDisplayer">
-			<div class="col-md-12 form-box">
-				<h2>
-					<div class="fa fa-pencil" style="font-size: 40px;"></div>
-					Write a new item
-				</h2>
-				<form class="form-addItem" action="newitem.php?addItem=1"
-					method="post">
-					<div class="col-md-6">
-						<h4>Title</h4>
-						<input type="text" size="70" value="Insert item title here"
-							autofocus name="title"> <br> <br>
-
-						<h4>
-							<div class="fa fa-list-ul"></div>
-							Top category <select id="topCat" name="topCategory">
-								<option value="-">-- Select a top category --</option>
-			                <?php
-																			$queryText = "SELECT categoryName FROM topcategory";
-																			$query = dbUtility::queryToDB ( $dbConn, $queryText );
-																			while ( $row = mysqli_fetch_array ( $query ) ) :
-																				echo "<option value='" . $row ['categoryName'] . "'>" . $row ['categoryName'] . "</option>";
-																			endwhile
-																			;
-																			dbUtility::freeMemoryAfterQuery ( $query );
-																			?>
-			                </select>
-						</h4>
-
-						<br>
-						<h4>
-							<div class="fa fa-list-ul"></div>
-							Sub category <select id="subCat" name="subCategory" disabled>
-								<option value="-">--</option>
-							</select>
-						</h4>
-						<br>
-						<h4>Some comments? :-D</h4>
-						<textarea rows="10" cols="80" name="comment"></textarea>
-						<br> <br> <br>
-					</div>
-
-					<div class="col-md-6">
-						<h4>
-							<div class="fa fa-link"></div>
-							Link
-						</h4>
-						<input type="text" size="70" value="Insert item link here"
-							name="link"> <br> <br> <br>
-						<div class="fa fa-link"></div>
-						Link Type <select name="linkType">
-							<option value="-">-- Select a Link Type --</option>
-		                <?php
-																		$queryText = "SELECT type FROM linktype ORDER BY type ASC";
-																		$query = dbUtility::queryToDB ( $dbConn, $queryText );
-																		while ( $row = mysqli_fetch_array ( $query ) ) :
-																			echo "<option value='" . $row ['type'] . "'>" . $row ['type'] . "</option>";
-																		endwhile
-																		;
-																		dbUtility::freeMemoryAfterQuery ( $query );
-																		?>
-						</select>
-						</h4>
-						<br> <br>
-					</div>
-
-					<div class="col-md-12">
-						<button class="btn btn-warning" type="submit">Proceed</button>
-						<br> <br>
-					</div>
-
-				</form>
-			</div>
+        	
+            <?php
+			switch (@$_GET['action']) {
+				case "":
+					include ("include/Admin/adminMenu.php");
+					break;
+				case "addItem":
+					include ("include/Admin/addItem.php");
+					break;
+				case "addSub":
+					include ("include/Admin/addSubCat.php");
+					break;
+				case "removeSub":
+					include ("include/Admin/removeSubCat.php");
+					break;
+				case "addTop":
+					include ("include/Admin/addTopCat.php");
+					break;
+				case "removeTop":
+					include ("include/Admin/removeTopCat.php");
+					break;
+				default:
+					echo "<h1>ERROR - Unknow URL</h1><br />";
+					break;
+			}
+			?>
+	
 		</div>
 
 		<footer>
@@ -216,60 +171,16 @@ kickOut ( $_SESSION ['role'], true );
         </script>
 
 
-	<!-- Success -->
-	<div class="modal fade" id="successBox" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h3 class="modal-title" id="myModalLabel">Item added with success</h3>
-				</div>
-				<div class="modal-body">
-					<h4>Data inserts:</h4>
-					<h5>Title: <?php echo $_POST['title']?></h5>
-					<h5>Link: <?php echo $_POST['link']?></h5>
-					<h5>Top category: <?php echo $_POST['topCategory']?></h5>
-					<h5>Sub category: <?php echo $_POST['subCategory']?></h5>
-					<h5>Comments:</h5>
-					<p><?php echo $_POST['comment']?></p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Error -->
-	<div class="modal fade" id="errorBox" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h3 class="modal-title" id="myModalLabel">Error</h3>
-				</div>
-				<div class="modal-body">
-					<h4>An error occourred</h4>
-					<h5>Unable to insert data in the Knowledge Room</h5>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 </body>
 </html>
 
+<!-- Insert items -->
 <?php
 $success_1 = false;
 $success_2 = false;
-if (isset ( $_GET ['addItem'] ) & @$_GET ['addItem'] == 1) {
-	$queryText_1 = "INSERT INTO resource (resourceId, title, annotationDate, description, subCategory) VALUES (NULL, '" . $_POST ['title'] . "', '25-06-2014', '" . $_POST ['comment'] . "', '" . $_POST ['subCategory'] . "')";
+if (isset ( $_GET ['addElement'] ) & @$_GET ['addElement'] == 1) {
+	$queryText_1 = "INSERT INTO resource (resourceId, title, annotationDate, description, subCategory, language) VALUES (NULL, '" . $_POST ['title'] . "', '00-00-0000', '" . $_POST ['comment'] . "', '" . $_POST ['subCategory'] . "', '" . $_POST ['lang'] . "')";
 	
 	$queryText_2 = "INSERT INTO link (linkId, linkPath, linkType, resource) VALUES (NULL, '" . $_POST ['link'] . "', '" . $_POST ['linkType'] . "', '" . $_POST ['title'] . "')";
 	
@@ -277,9 +188,27 @@ if (isset ( $_GET ['addItem'] ) & @$_GET ['addItem'] == 1) {
 		$success_1 = true;
 	if (dbUtility::queryToDB ( $dbConn, $queryText_2 ))
 		$success_2 = true;
-	dbUtility::freeMemoryAfterQuery ( $query );
+	//dbUtility::freeMemoryAfterQuery ( $queryText_1 );
+	//dbUtility::freeMemoryAfterQuery ( $queryText_2 );
 	
 	if ($success_1 & $success_2) {
+		echo "<script type='text/javascript'>showModalBox('#successBox');</script>";
+	} else {
+		echo "<script type='text/javascript'>showModalBox('#errorBox');</script>";
+	}
+}
+?>
+
+<!-- Manage top categories and sub catgories -->
+<?php
+$success = false;
+if (isset ( $_GET ['add'] ) & @$_GET ['add'] == 1) {
+	
+	if (dbUtility::queryToDB ( $dbConn, $queryText ))
+		$success = true;
+	//dbUtility::freeMemoryAfterQuery ( $queryText );
+	
+	if ($success) {
 		echo "<script type='text/javascript'>showModalBox('#successBox');</script>";
 	} else {
 		echo "<script type='text/javascript'>showModalBox('#errorBox');</script>";

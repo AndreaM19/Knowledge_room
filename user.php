@@ -117,12 +117,11 @@ LoginSessions::startSession ();
 			?>
             </div>
 
-			<div class="col-md-3">
+			<div class="col-md-3 text-center">
             <?php
-												echo "<img src='img/icon/role/" . $role . ".png' style='width:50px;' alt'" . $role . "'>";
-												echo "<h4>Role: " . $role . "</h4>";
-												?>
-            
+			echo "<img src='img/icon/role/" . $role . ".png' style='width:50px;' alt'" . $role . "'>";
+			echo "<h4>Role: " . $role . "</h4>";
+			?>
             </div>
 		</div>
 

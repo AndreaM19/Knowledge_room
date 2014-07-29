@@ -39,6 +39,10 @@ footer {
 	height:220px;
 }
 
+.catBox h5.itemCounter{
+	color: #FF6600;
+}
+
 .contentDisplayer{
 	border-top: solid 4px #FF6600;
 }
@@ -65,6 +69,7 @@ footer {
 	color: #999;
 }
 
+/*
 .form-box{
 	margin-top:20px;
 	margin-bottom:20px;
@@ -91,6 +96,17 @@ footer {
 .form-addItem select option{
 	color:#555;
 	font-size:14px;
+}
+*/
+.admin-form span{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+}
+
+.admin-menu a{
+	min-width:130px;
+	margin:2px;
 }
 
 .favourite a{

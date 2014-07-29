@@ -10,6 +10,9 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 
 <?php
 LoginSessions::startSession ();
+//This variable is used to define if user is recognized or not
+$recognized=null;
+
 if (isset ( $_SESSION ['role'] ) & @$_GET ['login'] != "false")
 	header ( "location:index.php" );
 
@@ -24,8 +27,10 @@ if (@$_GET ['login'] == "true") {
 			$_SESSION ['user'] = $row ['name'];
 			$_SESSION ['userMail'] = $row ['email'];
 			$_SESSION ['userImg'] = "user_data/" . $row ['name'] . "/avatar.jpg";
-			header ( "location:index.php" );
+			header ( "location:admin.php" );//redirect to admin page
+			$recognized=true;
 		}
+		else $recognized=false;
 	}
 	dbUtility::freeMemoryAfterQuery ( $query );
 } else if (@$_GET ['login'] == "false") {
@@ -161,8 +166,35 @@ if (@$_GET ['login'] == "true") {
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="js/jQuery/jquery.min.js"></script>
 	<script src="js/bootstrap/bootstrap.min.js"></script>
+    <script src="js/custom/customFunctions.js"></script>
+    
+    <!-- Error -->
+	<div class="modal fade" id="errorBox" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h3 class="modal-title" id="myModalLabel">Sorry but I do not know who you are...</h3>
+				</div>
+				<div class="modal-body">
+					<h4>An error occourred</h4>
+					<h5>Username and/or password was wrong</h5>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    
 </body>
 </html>
+
+<?php
+if(isset($recognized) & $recognized==false)echo "<script type='text/javascript'>showModalBox('#errorBox');</script>";
+?>
 
 <?php
 dbUtility::disconnectFromDB ( $dbConn );

@@ -6,7 +6,7 @@ $dbConn = dbUtility::connectToDB ( $HOST, $USER, $PASSWORD, $DB );
 
 $param=$_GET['cat'];
 
-$queryText="SELECT subCategoryName FROM subCategory WHERE topCategory='".$param."'";
+$queryText="SELECT subCategoryName FROM subcategory WHERE topCategory='".$param."'";
 $query = dbUtility::queryToDB ( $dbConn, $queryText );
 
 //Build Json File
