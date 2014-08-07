@@ -20,7 +20,7 @@ LoginSessions::startSession ();
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="shortcut icon" href="img/ico/favicon.ico">
+<link rel="icon" href="img/icon/favicon/favicon.ico">
 
 <title>Welcome to Knowledge Room</title>
 
@@ -100,7 +100,7 @@ LoginSessions::startSession ();
 					;
 				else
 					$queryParam = "WHERE topcategory='" . $_GET ['cat'] . "'";
-				$queryText = "SELECT * FROM subcategory " . $queryParam . "";
+				$queryText = "SELECT * FROM subcategory " . $queryParam . " ORDER BY subCategoryName ASC ";
 				$query = dbUtility::queryToDB ( $dbConn, $queryText );
 				$count = 0;
 				while ( $row = mysqli_fetch_array ( $query ) ) :

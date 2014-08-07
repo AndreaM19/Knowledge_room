@@ -98,10 +98,27 @@
 		</div>
 	</div>
     
-    <!-- Query Text -->
-    <?php
-	$queryText = "INSERT INTO subcategory (subCategoryId, subCategoryName, subCategoryDescription, topCategory) VALUES (NULL, '" . @$_POST ['subCatName'] . "', '" . @$_POST ['subCatDescription'] . "', '" . @$_POST ['topCategory'] . "')";
-    ?>
+<!-- Query Text -->
+<?php
+$queryText = "INSERT INTO subcategory (subCategoryId, subCategoryName, subCategoryDescription, topCategory) VALUES (NULL, '" . @$_POST ['subCatName'] . "', '" . @$_POST ['subCatDescription'] . "', '" . @$_POST ['topCategory'] . "')";
+?>
+    
+    <!-- Manage top categories and sub catgories -->
+<?php
+$success = false;
+if (isset ( $_GET ['add'] ) & @$_GET ['add'] == 1) {
+	
+	if (dbUtility::queryToDB ( $dbConn, $queryText ))
+		$success = true;
+	//dbUtility::freeMemoryAfterQuery ( $queryText );
+	
+	if ($success) {
+		echo "<script type='text/javascript'>showModalBox('#successBox');</script>";
+	} else {
+		echo "<script type='text/javascript'>showModalBox('#errorBox');</script>";
+	}
+}
+?>
 
 
                     

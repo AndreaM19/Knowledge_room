@@ -98,6 +98,12 @@ footer {
 	font-size:14px;
 }
 */
+
+.langFlag{
+	width:20px;
+	margin:2px;
+}
+
 .admin-form span{
 	border:none;
 	background-color:transparent;
@@ -107,6 +113,30 @@ footer {
 .admin-menu a{
 	min-width:130px;
 	margin:2px;
+}
+
+.admin-menu a.actionButton{
+	margin:5px;
+	width:200px;
+	height:80px;
+	text-align:left;
+}
+.admin-menu a.actionButton div.icon{
+	margin-top:10px;
+	margin-left:140px;
+	font-size:36px;
+}
+
+.admin-form div.admin-select-results{
+
+}
+
+.admin-date{
+	color:#FF6600;
+}
+
+.admin-summary{
+	color:#0099FF;
 }
 
 .favourite a{

@@ -20,7 +20,7 @@ LoginSessions::startSession ();
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="shortcut icon" href="img/ico/favicon.ico">
+<link rel="icon" href="img/icon/favicon/favicon.ico">
 
 <title>Welcome to Knowledge Room</title>
 

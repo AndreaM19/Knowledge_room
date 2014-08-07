@@ -2,6 +2,7 @@
 @ require 'include/DB/dbUtility.php';
 @ require 'include/DB/dbData.php';
 require_once 'include/Auth/LoginSessions.php';
+@require 'include/Utility/kick-out.php';
 ?>
 
 <?php
@@ -20,7 +21,7 @@ LoginSessions::startSession ();
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="shortcut icon" href="img/ico/favicon.ico">
+<link rel="icon" href="img/icon/favicon/favicon.ico">
 
 <title>Welcome to Knowledge Room</title>
 
@@ -42,7 +43,6 @@ LoginSessions::startSession ();
 </head>
 
 <body>
-
 
 	<!-- Container -->
 	<div class="container">
@@ -112,15 +112,29 @@ LoginSessions::startSession ();
 				$count = 0;
 				while ( $row = mysqli_fetch_array ( $query ) ) :
 					?>
-					<div class="col-md-1 favourite">
-					<br> <a href="#" id="star"><div class="fa fa-star"></div></a> <a
-						href="#" id="eye"><div class="fa fa-eye"></div></a>
+					<div class="col-md-1 favourite text-right">
+					<br> 
+                    <a href="#" id="star"><div class="fa fa-star"></div></a> 
+                    <br>
+                    <a href="#" id="eye"><div class="fa fa-eye"></div></a>
+                    <br>
+                    <?php
+					if(isset($_SESSION ['role'])){
+                    	echo"<a href='admin.php?action=editItem&top=".$_GET ['cat']."&sub=".$_GET ['subCat']."&item=".$row ['resourceId']."' id='editItem'><div class='fa fa-pencil'></div></a>"; 
+					}
+					?>
+                    
 				</div>
 				<div class="col-md-11">
 					<?php
 					$lang="";
-					if($row ['language']!=NULL)$lang=" (".$row ['language'].")";
-					echo "<h3>" . $row ['title'] . "".$lang."</h3><h4>" . $row ['annotationDate'] . "</h4>";
+					if($row ['language']!=NULL){
+						$lang="".$row ['language']."";
+						$imgLangTag="<img src='img/icon/languages/".$lang.".png'class='langFlag' alt='".$lang."' title='".$lang."'>";
+					}
+					else $imgLangTag="";
+					
+					echo "<h3>" . $row ['title'] . "".$imgLangTag."</h3><h4>" . $row ['annotationDate'] . "</h4>";
 					echo "<p class='text-justify'>" . $row ['description'] . "</p>";
 					echo "<h5><div class='fa " . $row ['linkIconName'] . "'></div> &nbsp;link: <a href='" . $row ['linkPath'] . "' target='_blank' rel='nofollow'>" . $row ['linkPath'] . "</a></h5>";
 					echo "<input type='hidden' name='title_" . $count . "' value='" . $row ['title'] . "'>"?>

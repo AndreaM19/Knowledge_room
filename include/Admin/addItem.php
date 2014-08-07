@@ -137,6 +137,32 @@
 	</div>
 
 
-
+<!-- Insert items into the DB -->
+<?php
+$success_1 = false;
+$success_2 = false;
+if (isset ( $_GET ['addElement'] ) & @$_GET ['addElement'] == 1) {
+	
+	//set the date for the insert
+	$date=new DateManager();
+	
+	$queryText_1 = "INSERT INTO resource (resourceId, title, annotationDate, description, subCategory, language) VALUES (NULL, '" . $_POST ['title'] . "', '".$date->getDate()."', '" . $_POST ['comment'] . "', '" . $_POST ['subCategory'] . "', '" . $_POST ['lang'] . "')";
+	
+	$queryText_2 = "INSERT INTO link (linkId, linkPath, linkType, resource) VALUES (NULL, '" . $_POST ['link'] . "', '" . $_POST ['linkType'] . "', '" . $_POST ['title'] . "')";
+	
+	if (dbUtility::queryToDB ( $dbConn, $queryText_1 ))
+		$success_1 = true;
+	if (dbUtility::queryToDB ( $dbConn, $queryText_2 ))
+		$success_2 = true;
+	//dbUtility::freeMemoryAfterQuery ( $queryText_1 );
+	//dbUtility::freeMemoryAfterQuery ( $queryText_2 );
+	
+	if ($success_1 & $success_2) {
+		echo "<script type='text/javascript'>showModalBox('#successBox');</script>";
+	} else {
+		echo "<script type='text/javascript'>showModalBox('#errorBox');</script>";
+	}
+}
+?>
                     
                   

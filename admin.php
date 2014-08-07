@@ -3,6 +3,8 @@
 @ require 'include/DB/dbData.php';
 require_once 'include/Auth/LoginSessions.php';
 @require 'include/Utility/kick-out.php';
+@require 'include/Utility/DateManager.php';
+require_once 'include/Admin/Summary.php';
 ?>
 
 <?php
@@ -25,7 +27,7 @@ kickOut ( $_SESSION ['role'], true );
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="shortcut icon" href="img/ico/favicon.ico">
+<link rel="icon" href="img/icon/favicon/favicon.ico">
 
 <title>Welcome to Knowledge Room</title>
 
@@ -44,6 +46,13 @@ kickOut ( $_SESSION ['role'], true );
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/jQuery/jquery.min.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<script src="js/custom/customFunctions.js"></script>
 
 </head>
 
@@ -97,6 +106,9 @@ kickOut ( $_SESSION ['role'], true );
 				case "addItem":
 					include ("include/Admin/addItem.php");
 					break;
+				case "editItem":
+					include ("include/Admin/editItem.php");
+					break;
 				case "addSub":
 					include ("include/Admin/addSubCat.php");
 					break;
@@ -128,12 +140,7 @@ kickOut ( $_SESSION ['role'], true );
 
 
 
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="js/jQuery/jquery.min.js"></script>
-	<script src="js/bootstrap/bootstrap.min.js"></script>
-	<script src="js/custom/customFunctions.js"></script>
+	
 
 	<!-- Ajax select -->
 	<script language="JavaScript" type="text/javascript">
@@ -175,46 +182,6 @@ kickOut ( $_SESSION ['role'], true );
 </body>
 </html>
 
-<!-- Insert items -->
-<?php
-$success_1 = false;
-$success_2 = false;
-if (isset ( $_GET ['addElement'] ) & @$_GET ['addElement'] == 1) {
-	$queryText_1 = "INSERT INTO resource (resourceId, title, annotationDate, description, subCategory, language) VALUES (NULL, '" . $_POST ['title'] . "', '00-00-0000', '" . $_POST ['comment'] . "', '" . $_POST ['subCategory'] . "', '" . $_POST ['lang'] . "')";
-	
-	$queryText_2 = "INSERT INTO link (linkId, linkPath, linkType, resource) VALUES (NULL, '" . $_POST ['link'] . "', '" . $_POST ['linkType'] . "', '" . $_POST ['title'] . "')";
-	
-	if (dbUtility::queryToDB ( $dbConn, $queryText_1 ))
-		$success_1 = true;
-	if (dbUtility::queryToDB ( $dbConn, $queryText_2 ))
-		$success_2 = true;
-	//dbUtility::freeMemoryAfterQuery ( $queryText_1 );
-	//dbUtility::freeMemoryAfterQuery ( $queryText_2 );
-	
-	if ($success_1 & $success_2) {
-		echo "<script type='text/javascript'>showModalBox('#successBox');</script>";
-	} else {
-		echo "<script type='text/javascript'>showModalBox('#errorBox');</script>";
-	}
-}
-?>
-
-<!-- Manage top categories and sub catgories -->
-<?php
-$success = false;
-if (isset ( $_GET ['add'] ) & @$_GET ['add'] == 1) {
-	
-	if (dbUtility::queryToDB ( $dbConn, $queryText ))
-		$success = true;
-	//dbUtility::freeMemoryAfterQuery ( $queryText );
-	
-	if ($success) {
-		echo "<script type='text/javascript'>showModalBox('#successBox');</script>";
-	} else {
-		echo "<script type='text/javascript'>showModalBox('#errorBox');</script>";
-	}
-}
-?>
 
 <?php
 dbUtility::disconnectFromDB ( $dbConn );
